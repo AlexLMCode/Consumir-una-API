@@ -42,6 +42,24 @@ fetch('https://randomuser.me/api/').then((response) => {
 
 (async function load() {
 
+    //const $home = $('.home') //selector de clase con jQuery
+    const $modal = document.getElementById('modal');
+    const $overlay = document.getElementById('overlay');
+    const $hideModal = document.getElementById('hide-modal');
+
+    const $modalTitle = $modal.querySelector('h1');
+    const $modalDescription = $modal.querySelector('p');
+    const $modalImage = $modal.querySelector('img');
+
+    const $featuringContainer = document.getElementById('featuring');
+    const $form = document.getElementById('form');
+    const $home = document.getElementById('home');
+
+
+    const $actionContainer = document.querySelector('#action');
+    const $dramaContainer = document.querySelector('#drama');
+    const $animationContainer = document.querySelector('#animation');
+
     async function getData(url) {
         const response = await fetch(url);
         return await response.json();
@@ -66,26 +84,12 @@ fetch('https://randomuser.me/api/').then((response) => {
     actionList.data.movies.forEach((movie) => {
         //debugger
         const HTMLString = videoItemTemplate(movie);
+        const html = document.implementation.createHTMLDocument();
+        html.body.innerHTML = HTMLString;
+        debugger
+        $actionContainer.append(html.body.children[0]);
         console.log(HTMLString);
     });
-
-    //const $home = $('.home') //selector de clase con jQuery
-    const $modal = document.getElementById('modal');
-    const $overlay = document.getElementById('overlay');
-    const $hideModal = document.getElementById('hide-modal');
-
-    const $modalTitle = $modal.querySelector('h1');
-    const $modalDescription = $modal.querySelector('p');
-    const $modalImage = $modal.querySelector('img');
-
-    const $featuringContainer = document.getElementById('featuring');
-    const $form = document.getElementById('form');
-    const $home = document.getElementById('home');
-
-
-    const $actionContainer = document.querySelector('action');
-    const $dramaContainer = document.querySelector('drama');
-    const $animationContainer = document.querySelector('animation');
 
     /*'<div class="primaryPlaylistItem">' +
     '<div class="primaryPlaylistItem-image">' +
@@ -93,7 +97,6 @@ fetch('https://randomuser.me/api/').then((response) => {
     < /div>
     '<h4 class="primaryPlaylistItem-title">Titulo de la peli </h4>'
     < /div>'*/ //ASI se haria con jQuery para crear template
-
-    console.log(videoItemTemplate('src/images/covers/bitcoin.jpg', 'bitcoin'));
+    //console.log(videoItemTemplate('src/images/covers/bitcoin.jpg', 'bitcoin'));
 
 })();
