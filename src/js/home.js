@@ -55,9 +55,6 @@ fetch('https://randomuser.me/api/').then((response) => {
     const $form = document.getElementById('form');
     const $home = document.getElementById('home');
 
-    const $actionContainer = document.querySelector('#action');
-    const $dramaContainer = document.querySelector('#drama');
-    const $animationContainer = document.querySelector('#animation');
 
     async function getData(url) {
         const response = await fetch(url);
@@ -65,6 +62,9 @@ fetch('https://randomuser.me/api/').then((response) => {
     }
 
     const actionList = await getData('https://yts.mx/api/v2/list_movies.json?genre=action');
+    const dramaList = await getData('https://yts.mx/api/v2/list_movies.json?genre=drama');
+    const animationList = await getData('https://yts.mx/api/v2/list_movies.json?genre=animation');
+    console.log(actionList);
 
     console.log('pelis-action', actionList);
 
@@ -88,6 +88,7 @@ fetch('https://randomuser.me/api/').then((response) => {
     function renderMovieList(list, $container) {
         list.forEach((movie) => {
             //debugger
+            $container.children[0].remove();
             const HTMLString = videoItemTemplate(movie);
             const movieElement = createTemplate(HTMLString);
             $container.append(movieElement);
@@ -95,7 +96,13 @@ fetch('https://randomuser.me/api/').then((response) => {
         });
     }
 
+    const $actionContainer = document.getElementById('#action');
+    const $dramaContainer = document.getElementById('#drama');
+    const $animationContainer = document.getElementById('#animation');
+
     renderMovieList(actionList.data.movies, $actionContainer);
+    renderMovieList(dramaList.data.movies, $dramaContainer);
+    renderMovieList(animationList.data.movies, $animationContainer);
 
 
     /*'<div class="primaryPlaylistItem">' +
