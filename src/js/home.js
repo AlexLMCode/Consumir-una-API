@@ -55,7 +55,6 @@ fetch('https://randomuser.me/api/').then((response) => {
     const $form = document.getElementById('form');
     const $home = document.getElementById('home');
 
-
     const $actionContainer = document.querySelector('#action');
     const $dramaContainer = document.querySelector('#drama');
     const $animationContainer = document.querySelector('#animation');
@@ -66,8 +65,7 @@ fetch('https://randomuser.me/api/').then((response) => {
     }
 
     const actionList = await getData('https://yts.mx/api/v2/list_movies.json?genre=action');
-    //const dramaList = await getData('https://yts.mx/api/v2/list_movies.json?genre=drama');
-    //const animationList = await getData('https://yts.mx/api/v2/list_movies.json?genre=animation');
+
     console.log('pelis-action', actionList);
 
     function videoItemTemplate(movie) {
@@ -81,15 +79,24 @@ fetch('https://randomuser.me/api/').then((response) => {
         )
     }
 
-    actionList.data.movies.forEach((movie) => {
-        //debugger
-        const HTMLString = videoItemTemplate(movie);
+    function createTemplate(HTMLString) {
         const html = document.implementation.createHTMLDocument();
         html.body.innerHTML = HTMLString;
-        debugger
-        $actionContainer.append(html.body.children[0]);
-        console.log(HTMLString);
-    });
+        return html.body.children[0]
+    }
+
+    function renderMovieList(list, $container) {
+        list.forEach((movie) => {
+            //debugger
+            const HTMLString = videoItemTemplate(movie);
+            const movieElement = createTemplate(HTMLString);
+            $container.append(movieElement);
+            console.log(HTMLString);
+        });
+    }
+
+    renderMovieList(actionList.data.movies, $actionContainer);
+
 
     /*'<div class="primaryPlaylistItem">' +
     '<div class="primaryPlaylistItem-image">' +
