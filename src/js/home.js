@@ -44,8 +44,8 @@ fetch('https://randomuser.me/api/').then((response) => {
 
     /*const $modalTitle = $modal.querySelector('h1');
     const $modalDescription = $modal.querySelector('p');
-    const $modalImage = $modal.querySelector('img');
-    const $featuringContainer = document.getElementById('featuring');*/
+    const $modalImage = $modal.querySelector('img');*/
+    const $featuringContainer = document.getElementById('featuring');
 
     /*MOSTRAR EL MODAL CUANDO LE DAMOS CLICK A UNA PELICULA*/
     //const $home = $('.home') //selector de clase con jQuery
@@ -82,9 +82,22 @@ fetch('https://randomuser.me/api/').then((response) => {
     const $form = document.getElementById('form');
     const $home = document.getElementById('home');
 
+    function setAttributes($element , attributes){
+        for (const attribute in  attributes){   //Esto va a iterar los elementos que esten dentro de attributes, creando una variable atributo donde se guardara el elemento iterado
+            $element.setAttribute(attribute, attributes[attribute]);
+        }
+    }
+
     $form.addEventListener('submit', (event)=>{
         event.preventDefault();
-        $home.classList.add('search-active')
+        $home.classList.add('search-active');
+        const $loader = document.createElement('img');
+        setAttributes($loader, {
+            src: 'src/images/loader.gif',
+            height: 50,
+            width: 50
+        });
+        $featuringContainer.append($loader);
     });
 
     /*RENDERIZAR LAS PELICULAS EN PANTALLA*/
@@ -114,6 +127,7 @@ fetch('https://randomuser.me/api/').then((response) => {
             addEventClick($container);
         });
         $container.children[0].remove();
+        console.log('Pelis mostradas!')
     }
 
 
