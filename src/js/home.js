@@ -53,12 +53,12 @@ fetch('https://randomuser.me/api/').then((response) => {
     const $overlay = document.getElementById('overlay');
     const $hideModal = document.getElementById('hide-modal');
 
-    function showModal(){
+    function showModal() {
         $overlay.classList.add('active');
         $modal.style.animation = 'modalIn .8s forwards'
     }
 
-    function hideModal(){
+    function hideModal() {
         $overlay.classList.remove('active');
         $modal.style.animation = 'modalOut .8s forwards'
     }
@@ -67,7 +67,7 @@ fetch('https://randomuser.me/api/').then((response) => {
 
 
     function addEventClick($element) {
-        $element.addEventListener('click', ()=>{
+        $element.addEventListener('click', () => {
             showModal();
         })
     }
@@ -82,13 +82,31 @@ fetch('https://randomuser.me/api/').then((response) => {
     const $form = document.getElementById('form');
     const $home = document.getElementById('home');
 
-    function setAttributes($element , attributes){
-        for (const attribute in  attributes){   //Esto va a iterar los elementos que esten dentro de attributes, creando una variable atributo donde se guardara el elemento iterado
+    function setAttributes($element, attributes) {
+        for (const attribute in attributes) {   //Esto va a iterar los elementos que esten dentro de attributes, creando una variable atributo donde se guardara el elemento iterado
             $element.setAttribute(attribute, attributes[attribute]);
         }
     }
 
-    $form.addEventListener('submit', (event)=>{
+    const BASE_API = 'https://yts.mx/api/v2/';
+
+    function featuringTemplate(peli) {
+        return (
+            `
+      <div class="featuring">
+        <div class="featuring-image">
+          <img src="${peli.medium_cover_image}" width="70" height="100" alt="">
+        </div>
+        <div class="featuring-content">
+          <p class="featuring-title">Pelicula encontrada</p>
+          <p class="featuring-album">${peli.title}</p>
+        </div>
+      </div>
+      `
+        )
+    }
+
+    $form.addEventListener('submit', async (event) => {
         event.preventDefault();
         $home.classList.add('search-active');
         const $loader = document.createElement('img');
@@ -98,6 +116,9 @@ fetch('https://randomuser.me/api/').then((response) => {
             width: 50
         });
         $featuringContainer.append($loader);
+        const data = new FormData($form);
+        const peli = await getData(`${BASE_API}list_movies.json?limit=1&query_term=${data.get('name')}`);
+        $featuringContainer.innerHTML = featuringTemplate(peli.data.movies[0]);
     });
 
     /*RENDERIZAR LAS PELICULAS EN PANTALLA*/
